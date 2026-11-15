@@ -1,0 +1,9 @@
+name	label	w	h	note
+landscape_720	16:9  1280x720	1280	720	YouTube, Vimeo, most projectors. Largest 16:9 on Non-Commercial.
+landscape_1080	16:9  1920x1080	1920	1080	Needs Commercial license (NC caps at 1280).
+square	1:1  1080x1080	1080	1080	Instagram square post.
+portrait_4x5	4:5  1024x1280	1024	1280	Instagram feed portrait (1080x1350 scaled to NC cap).
+portrait_9x16	9:16  720x1280	720	1280	Reels / TikTok / Shorts (1080x1920 scaled to NC cap).
+projector_4x3	4:3  1024x768	1024	768	Older / venue projectors.
+cinema_239	2.39:1  1280x536	1280	536	Widescreen / letterbox look.
+custom	Custom	0	0	Uses Custom Width / Custom Height.

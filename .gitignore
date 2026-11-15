@@ -1,0 +1,29 @@
+# --- TouchDesigner autosaves / backups ---
+Backup/
+*.[0-9].toe
+*.[0-9][0-9].toe
+*.[0-9][0-9][0-9].toe
+CrashAutoSave*
+*.dmp
+
+# --- Large or private media ---
+Stems/
+Recordings/
+_snapshots/
+*.mov
+*.mp4
+*.wav
+*.mp3
+
+# Source photo: kept out of git by default (may not be ours to publish).
+# If you own it / the repo is private, delete this line and commit it.
+Assets/oak/oak_photo.png
+
+# --- OS / editor ---
+Thumbs.db
+desktop.ini
+Desktop.ini
+.DS_Store
+.vscode/
+__pycache__/
+*.pyc

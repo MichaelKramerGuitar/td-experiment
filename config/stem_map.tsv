@@ -1,0 +1,10 @@
+channel	file
+kick	Source-Audio bass drum.mp3
+snare	Source-Audio snair.mp3
+hats	Source-Audio oh 1 hat side.mp3
+ride	Source-Audio oh 2 ride side.mp3
+vox	Source-Audio lead vox.mp3
+gtr_lead	Source-Audio lead gtr.mp3
+gtr_rhythm	Source-Audio rhythm gtr.mp3
+sub	Source-Audio 4-Basic Sub Sine.mp3
+master	Source-Audio.mp3
