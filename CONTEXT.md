@@ -25,6 +25,9 @@ ride side), master.
 - **Reusable + modular over clever.** Prefer patterns that carry to the next project. Add parts, remove parts.
 - **Configuration over code edits.** Formats, paths, frame rate live in `config`; per-song data lives in tables/files.
 - Verify with real renders/measurements, not assumptions.
+- **Michael is learning TouchDesigner, not outsourcing it.** Claude explains the *why* in TD terms before
+  building, keeps ARCHITECTURE.md teachable, and regularly hands Michael a piece to build by hand
+  (see `docs/LEARNING.md`), then reviews his network over the MCP bridge. Michael: hold Claude to this.
 
 ## 3. Concepts and vocabulary (our ontology)
 
@@ -81,6 +84,42 @@ Known limits / debts:
 - Build scripts in `scripts/` generated the oak scenes + lyrics; the externalised .tox files are now the
   source of truth. Re-running a build script rebuilds that module from scratch (and overwrites hand edits).
 
+## 5b. Milestones (frozen states)
+
+| Tag | Date | Statement | Reference render |
+|---|---|---|---|
+| `iter-01-hello-world` | 2026-11-16 | "Hello, World": mixer-style mapping — each stem's loudness animates its region of the image. Oak · Particles + Lyrics is the most complete statement. | GitHub Release `iter-01-hello-world` (Oak · Particles + Lyrics, 720p60) |
+
+Reflection (Michael): the foundation is a translation of a mixing board — each voice's amplitude "dancing"
+over time — mapped onto regions of an image and rendered through TD's aesthetics. Genuine milestone; also
+only the surface of what this can be.
+
+## 5c. Vector 2 — Metabolism (from "mixer" to "photosynthesis")
+
+Inspiration: BREAKFAST (Andrew Zolty) — real-time ecological data turned into physical, kinetic experience,
+so data seeps into intuition. Goal: cultivate relationship and reciprocity with global natural processes.
+
+The shift: from *mapping* (channel → region) to a **process with state**, where things are converted:
+
+| Photosynthesis | In the piece | Candidate data / mechanism |
+|---|---|---|
+| Sunlight (energy in) | **Audio** — energy absorbed, stored, spent | analysis bus; growth = stored energy |
+| The leaf / organism (where conversion happens) | **The body / stage** (image or structure) | oak structure, a leaf, the ocean surface |
+| CO₂ (substrate) | what the body breathes in | NOAA Mauna Loa CO₂ (daily / monthly CSV) |
+| Chlorophyll (capacity to convert) | how much of the body can photosynthesise | satellite chlorophyll-a / phytoplankton (NASA PACE, NOAA ERDDAP), land SIF/GPP |
+| Light actually available | modulates conversion | PAR (photosynthetically available radiation) |
+| O₂ / sugar (products) | **visible outflow** — particles/flows leaving the stage | emitted at a rate set by the process |
+
+"Chemistry" in TD terms: rates with **saturation** (more energy stops helping once substrate runs out),
+**limiting factors** (the scarcest input sets the pace), **storage and delay** (energy banked now, released
+later), **feedback state** (the body changes over the piece). Rendering candidates: reaction-diffusion
+(Gray-Scott — literally a chemical simulation; feed/kill rates from data, energy from audio) and GPU particles
+for the outflow.
+
+A strong first study: the **Keeling curve's seasonal sawtooth** — the yearly rise and fall of CO₂ at Mauna
+Loa is the Northern Hemisphere's growing season, i.e. the planet's photosynthesis as a breath. Time-compress
+decades of it across the song, or play the last year as one breath per section.
+
 ## 6. Open threads / backlog
 
 - [ ] `live_in` adapter (Focusrite 18i16, Audio Device In) — same output contract as `stems_in`.
@@ -92,6 +131,9 @@ Known limits / debts:
 - [ ] Shared `td-modules` library repo once modules stabilise across 2+ songs.
 - [ ] Projector/multi-display output profile (Window COMP per display).
 
+- [ ] **Vector 2:** `world` layer — data adapters (CO₂ first), a second contract `op.World`, a metabolism
+      module with state (energy store, rates, outflow). First study: Keeling-curve breath.
+
 ## 7. Session log
 
 - **2026-11-15 — session 1.** Built everything above. Key learnings recorded in ARCHITECTURE.md §10 (TD gotchas).
@@ -100,6 +142,9 @@ Known limits / debts:
   First full offline render: `Recordings/8_little_prayers_oak_painted_720p60.mp4` (Oak · Painted + lyrics).
   Observation for next session: late in the song the branch highlights run hot/pale (snare flash + pastel
   grade stacking) — candidate for tuning.
+- **2026-11-16 — session 2.** Michael pushed main. Tagged `iter-01-hello-world`. Rendered Oak · Particles +
+  Lyrics offline (reference render). Wrote versioning workflow (ARCHITECTURE §13), Vector 2 concept (§5c),
+  learning path (`docs/LEARNING.md`).
 
 ## 8. How to resume with Claude
 

@@ -232,3 +232,36 @@ Works best for images with a clear connected structure (trees, rivers, veins, ar
 **What generalises vs. what's per-song:** the pipeline, contract, analysis, control panel, config, overlay and
 render tooling are generic. The *meaning* — which instrument is which element, which image, which words — is
 per-song by design: it lives in tables, assets and the mapping section of CONTEXT.md, not in code.
+
+## 13. Versioning: freezing states while moving forward
+
+**Tags freeze, branches explore.**
+
+- A **tag** is a permanent name for one exact commit. Annotated tags (`git tag -a`) carry a message, date and
+  author. Use them for milestones: `iter-01-hello-world`, `iter-02-…`. They never move, unlike a branch.
+- A **branch** is a moving line of work. Use short-lived branches for experiments
+  (`explore/metabolism`, `explore/reaction-diffusion`) and merge to `main` when they're good. No need for a
+  branch per stable state; that's what tags are for.
+- A **GitHub Release** on a tag is where the *artwork* of that state lives: attach the rendered MP4 plus notes.
+  Renders stay out of git; the release links code state and output together.
+
+**Milestone ritual**
+```
+git add -A && git commit -m "…"                       # everything committed
+git tag -a iter-02-<words> -m "what this state says"  # freeze it
+git push && git push origin iter-02-<words>           # publish
+# GitHub → Releases → Draft new release → choose the tag → attach the render
+```
+Then add a row to CONTEXT.md §5b.
+
+**Revisiting a frozen state without disturbing current work** (`git worktree`): a second folder checked out
+at the tag, so you can open the old `.toe` in TouchDesigner side by side:
+```
+git worktree add ../TDExperiement-iter01 iter-01-hello-world
+# copy the git-ignored media in: Stems\  and  Assets\oak\oak_photo.png
+# open ..\TDExperiement-iter01\TDExperiement.toe   (when done: git worktree remove ../TDExperiement-iter01)
+```
+
+**TouchDesigner-specific:** the `.toe` and `.tox` files are binary, so git can't merge them. Avoid editing the
+same module on two branches at once. Because modules are externalised, a branch usually touches a few `.tox`
+files plus readable `.frag`/`.py`/`.tsv` files, and those diffs tell the story.
