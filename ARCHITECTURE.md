@@ -220,6 +220,11 @@ convert the .mov afterwards (Premiere/Media Encoder, HandBrake, or
     For data textures, set the resolution explicitly to match the input (`op('home').width`).
 16. **Host time can jump.** After a freeze or a realtime↔offline switch, `absTime.stepSeconds` can be huge
     or negative; one bad step drove the metabolism to infinity. Clamp dt and self-heal non-finite state.
+17. **A .toe remembers that it was recording.** Saving (Ctrl+S) during a render stores `record = On` and
+    `realTime = Off`; on reopen TD resumes recording into the old take name. Before reopening a project
+    that was saved mid-render, expect it; turn Record off first. Also: if TD is force-closed, check Task
+    Manager for a leftover `TouchDesigner.exe` — it can keep the bridge port (9981) and the new TD's
+    webserver silently never answers.
 
 ## 11. Files and source control
 

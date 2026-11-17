@@ -59,12 +59,12 @@ X(txt.par.resolutionh, 'op.Config.par.Height')
 txt.par.bgalpha = 0
 txt.par.font = 'Sitka Display'
 txt.par.typeface = 'Italic'
-X(txt.par.fontsizex, 'parent().par.Fontsize * op.Config.par.Height / 720')   # scales with output size
+X(txt.par.fontsizex, 'parent().par.Fontsize * min(op.Config.par.Width, op.Config.par.Height) / 720')   # scales with the short side (works in 9:16)
 txt.par.fontcolorr, txt.par.fontcolorg, txt.par.fontcolorb = 1.0, 0.97, 0.90
 txt.par.alignx = 'center'
 txt.par.aligny = 'bottom'
 txt.par.positionunit = 'pixels'
-X(txt.par.positiony, 'parent().par.Bottom * op.Config.par.Height / 720')
+X(txt.par.positiony, 'parent().par.Bottom * min(op.Config.par.Width, op.Config.par.Height) / 720')
 txt.par.wordwrap = True
 txt.par.text = ''
 

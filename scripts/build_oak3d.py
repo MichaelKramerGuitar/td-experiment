@@ -39,9 +39,10 @@ pg.appendToggle('Freecam', label='Free Camera (ignore path)')
 pg2 = M.appendCustomPage('Camera')
 for n_, lbl in (('Centerx', 'Orbit Center X'), ('Centery', 'Orbit Center Y'), ('Centerz', 'Orbit Center Z')):
     pg2.appendFloat(n_, label=lbl)
+pg2.appendFloat('Portraitpull', label='Portrait Step-back')   # 1 = none; 1.35 = 35% farther in 9:16
 for p_, v in (('Data', 'Assets/oak3d/tree3d.npz'), ('Vitalitygain', 1.45), ('Previewgrowth', -1.0),
               ('Pointsize', 0.0032), ('Drift', 0.08), ('Freecam', False),
-              ('Centerx', -0.27), ('Centery', 0.41), ('Centerz', -0.18)):
+              ('Centerx', -0.27), ('Centery', 0.41), ('Centerz', -0.18), ('Portraitpull', 1.35)):
     M.par[p_] = v
     M.par[p_].default = v
 
@@ -60,10 +61,13 @@ X(met.par.chops, "op.Metabolism.op('out')")
 # ---- one-time load: npz -> two float textures ----
 loader = mk(textDAT, 'loader', -900, 0)
 loader.text = '''# Script TOP callbacks shared by 'home' and 'colors'.
-# Loads the point cloud once (cached in the COMP's storage) and hands it to the GPU as float textures:
+# Loads the point cloud once (cached in a module-level dict, NOT COMP storage: storage is saved into the
+# .toe and would add ~4 MB to every save) and hands it to the GPU as float textures:
 #   home   = (x, y, z, growth order)      colors = (r, g, b, kind)
 # One pixel = one particle. Unused pixels get growth 2.0 so they never appear.
 import numpy as np
+
+_CACHE = {}   # COMP path -> (data file, home, colors, count); rebuilt after a restart, never saved
 
 def onSetupParameters(scriptOp):
     return
@@ -71,7 +75,7 @@ def onSetupParameters(scriptOp):
 def onCook(scriptOp):
     M = scriptOp.parent()
     key = M.par.Data.eval()
-    cache = M.fetch('cache', None)
+    cache = _CACHE.get(M.path)
     if cache is None or cache[0] != key:
         d = np.load(project.folder + '/' + key)
         xyz, rgb, g, k = d['xyz'], d['rgb'], d['growth'], d['kind']
@@ -86,7 +90,7 @@ def onCook(scriptOp):
         col[:n, :3] = rgb
         col[:n, 3] = k
         cache = (key, home.reshape(H, W, 4), col.reshape(H, W, 4), n)
-        M.store('cache', cache)
+        _CACHE[M.path] = cache
         M.store('count', n)
     scriptOp.copyNumpyArray(cache[1] if scriptOp.name == 'home' else cache[2])
     return
@@ -250,11 +254,19 @@ def onFrameStart(frame):
     cx, cy, cz = M.par.Centerx.eval(), M.par.Centery.eval(), M.par.Centerz.eval()
     a = math.radians(v['angle'])
     cam, tgt = M.op('cam'), M.op('target')
-    cam.par.tx = cx + v['radius'] * math.sin(a)
-    cam.par.tz = cz + v['radius'] * math.cos(a)
+    # Format-aware: the table's fov is a HORIZONTAL fov designed for 16:9. Keep the same VERTICAL view in
+    # every format (landscape unchanged), and step back in portrait so more of the tree's width fits.
+    W, H = op.Config.par.Width.eval(), op.Config.par.Height.eval()
+    aspect = W / max(1.0, H)
+    portrait = min(1.0, max(0.0, (16 / 9 - aspect) / (16 / 9 - 9 / 16)))
+    radius = v['radius'] * (1.0 + (M.par.Portraitpull.eval() - 1.0) * portrait)
+    vfov = 2 * math.degrees(math.atan(math.tan(math.radians(v['fov']) / 2) / (16 / 9)))
+    cam.par.tx = cx + radius * math.sin(a)
+    cam.par.tz = cz + radius * math.cos(a)
     cam.par.ty = v['height']
     tgt.par.tx, tgt.par.ty, tgt.par.tz = cx, v['look_y'], cz
-    cam.par.fov = v['fov']
+    cam.par.viewanglemethod = 'vertfov'
+    cam.par.fov = vfov
     return
 '''
 

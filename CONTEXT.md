@@ -90,6 +90,7 @@ Known limits / debts:
 |---|---|---|---|
 | `iter-01-hello-world` | 2026-11-16 | "Hello, World": mixer-style mapping — each stem's loudness animates its region of the image. Oak · Particles + Lyrics is the most complete statement. | GitHub Release `iter-01-hello-world` (Oak · Particles + Lyrics, 720p60) |
 | `iter-02-metabolism-stress` | 2026-11-17 | Metabolism: the song is energy, 68 years of Mauna Loa CO₂ is the world, the oak is an organism that lives on the breath. *Stress* role, start to finish. Michael's favourite of the three roles. | GitHub Release `iter-02-metabolism-stress` (Oak · Metabolism · Stress + Lyrics, 720p60); notes in `docs/releases/` |
+| `iter-03-walk-in-3d` | 2026-11-17 | Walk in 3D: the metabolism's oak as ~126k particles lifted from the photo; a camera walks to it at full bloom, circles it through the decades and stays as it decays. *Stress* role. First release for social. | GitHub Release `iter-03-walk-in-3d` (YouTube 1920×1080p60 + Instagram Reel 1080×1920p60); notes in `docs/releases/` |
 
 Reflection (Michael): the foundation is a translation of a mixing board — each voice's amplitude "dancing"
 over time — mapped onto regions of an image and rendered through TD's aesthetics. Genuine milestone; also
@@ -163,6 +164,12 @@ decay experienced in 3D space. Planned on branch `explore/walk-in-3d` (see sessi
   *Oak · 3D Walk*. Fixed: metabolism blew up to infinity after a host time jump (gotcha 16).
   Next: watch it in Stress; tune the walk (Michael's exercise: edit camera_path.tsv); canopy beyond photo
   edges; backdrop; depth/fog.
+- **2026-11-17 — session 3c.** Format-aware camera (vertical fov + `Portraitpull` step-back in 9:16), lyrics
+  sized by the frame's short side. Rendered Oak · 3D Walk (Stress, lyrics) offline in landscape and portrait;
+  upscaled to 1920×1080 (YouTube) and 1080×1920 (Instagram Reel) with the stereo mix; tagged
+  `iter-03-walk-in-3d` and released. A freeze at render start traced to a stale TD process holding the
+  bridge port, and a project saved mid-render reopening with the recorder still on (gotcha 17).
+  Next (iter-04): canopy beyond the photo's top edge, fading backdrop, depth fog, limb variants.
 
 ## 8. How to resume with Claude
 

@@ -27,9 +27,17 @@ def onFrameStart(frame):
     cx, cy, cz = M.par.Centerx.eval(), M.par.Centery.eval(), M.par.Centerz.eval()
     a = math.radians(v['angle'])
     cam, tgt = M.op('cam'), M.op('target')
-    cam.par.tx = cx + v['radius'] * math.sin(a)
-    cam.par.tz = cz + v['radius'] * math.cos(a)
+    # Format-aware: the table's fov is a HORIZONTAL fov designed for 16:9. Keep the same VERTICAL view in
+    # every format (landscape unchanged), and step back in portrait so more of the tree's width fits.
+    W, H = op.Config.par.Width.eval(), op.Config.par.Height.eval()
+    aspect = W / max(1.0, H)
+    portrait = min(1.0, max(0.0, (16 / 9 - aspect) / (16 / 9 - 9 / 16)))
+    radius = v['radius'] * (1.0 + (M.par.Portraitpull.eval() - 1.0) * portrait)
+    vfov = 2 * math.degrees(math.atan(math.tan(math.radians(v['fov']) / 2) / (16 / 9)))
+    cam.par.tx = cx + radius * math.sin(a)
+    cam.par.tz = cz + radius * math.cos(a)
     cam.par.ty = v['height']
     tgt.par.tx, tgt.par.ty, tgt.par.tz = cx, v['look_y'], cz
-    cam.par.fov = v['fov']
+    cam.par.viewanglemethod = 'vertfov'
+    cam.par.fov = vfov
     return
