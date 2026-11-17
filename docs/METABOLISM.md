@@ -84,8 +84,18 @@ Outputs to `op.Metabolism.op('out')`: `energy`, `rate`, `breath`, `vitality`, pl
 5. Reaction-diffusion body + breath particles.
 6. Inhabitor v0, first render, tag `iter-02-…` when it says something.
 
-## 5. Open questions
+## 5. Decisions (2026-11-17)
 
-- First dataset (see CONTEXT.md §5c candidates).
-- Which audio feeds intake: master power, or a weighted mix of stems (each instrument a different "nutrient")?
+- **First world:** NOAA Mauna Loa monthly CO₂, 1958 → today (`Assets/world/co2_mm_mlo.csv`, frozen snapshot).
+  The rising trend is the arc; the yearly sawtooth is a breath.
+- **Intake:** **stems as nutrients**, each instrument feeding the metabolism differently (to design: e.g.
+  drums = fast, spiky energy; bass/sub = slow base load; voice = sustaining; guitars = trace elements that
+  unlock reactions).
+- **World adapter:** Michael builds it by hand (`docs/exercises/05_world_adapter.md`), Claude reviews.
+
+## 6. Open questions
+
+- The nutrient roles above: which stem enables which reaction?
 - Does the inhabitor have a lifespan / generations across the song?
+- How does a rising CO₂ arc feel inside the metabolism: abundance (more substrate) or stress, or both,
+  crossing over at some point in the song? (This is the narrative choice, not a technical one.)
