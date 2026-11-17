@@ -89,6 +89,7 @@ Known limits / debts:
 | Tag | Date | Statement | Reference render |
 |---|---|---|---|
 | `iter-01-hello-world` | 2026-11-16 | "Hello, World": mixer-style mapping — each stem's loudness animates its region of the image. Oak · Particles + Lyrics is the most complete statement. | GitHub Release `iter-01-hello-world` (Oak · Particles + Lyrics, 720p60) |
+| `iter-02-metabolism-stress` | 2026-11-17 | Metabolism: the song is energy, 68 years of Mauna Loa CO₂ is the world, the oak is an organism that lives on the breath. *Stress* role, start to finish. Michael's favourite of the three roles. | GitHub Release `iter-02-metabolism-stress` (Oak · Metabolism · Stress + Lyrics, 720p60); notes in `docs/releases/` |
 
 Reflection (Michael): the foundation is a translation of a mixing board — each voice's amplitude "dancing"
 over time — mapped onto regions of an image and rendered through TD's aesthetics. Genuine milestone; also
@@ -120,6 +121,12 @@ A strong first study: the **Keeling curve's seasonal sawtooth** — the yearly r
 Loa is the Northern Hemisphere's growing season, i.e. the planet's photosynthesis as a breath. Time-compress
 decades of it across the song, or play the last year as one breath per section.
 
+## 5d. Next vector — walking into the tree (3D)
+
+Stay with the *Stress* role. Once the tree is in full bloom, a camera enters: an observer on a walk finds the
+tree, approaches, circles it in awe, and stays with it as it grows and decays — the particle growth and
+decay experienced in 3D space. Planned on branch `explore/walk-in-3d` (see session 3 notes / plan).
+
 ## 6. Open threads / backlog
 
 - [ ] `live_in` adapter (Focusrite 18i16, Audio Device In) — same output contract as `stems_in`.
@@ -145,6 +152,11 @@ decades of it across the song, or play the last year as one breath per section.
 - **2026-11-16 — session 2.** Michael pushed main. Tagged `iter-01-hello-world`. Rendered Oak · Particles +
   Lyrics offline (reference render). Wrote versioning workflow (ARCHITECTURE §13), Vector 2 concept (§5c),
   learning path (`docs/LEARNING.md`).
+- **2026-11-17 — session 3.** Branch `explore/metabolism`: world adapter (CO₂), metabolism engine
+  (plain Python core + offline simulator), World Role switch, Oak · Metabolism scene. Michael's favourite:
+  Stress, start to finish → rendered, merged to main, tagged `iter-02-metabolism-stress`, release notes with
+  audience-presentation ideas. Fixed: synced DATs emptied by the save script (gotcha 12); project.save via
+  bridge hangs (gotcha 13). Next: 3D walk into the tree.
 
 ## 8. How to resume with Claude
 

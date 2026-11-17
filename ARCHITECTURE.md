@@ -194,6 +194,11 @@ convert the .mov afterwards (Premiere/Media Encoder, HandBrake, or
     (This made one render 1 fps and another uncompressed 24 GB before we caught it.)
 11. **Movie File Out opens its file the instant Record turns on** → set the file name first, start recording
     a frame later (`run(..., delayFrames=1)`).
+12. **Synced DATs re-read their file when you access `.text`.** Opening the file for writing empties it, so
+    `open(path, 'w')` followed by `dat.text` returns the empty file and wipes the DAT. Read first, write
+    second, and never write an empty DAT over a non-empty file (see `scripts/externalize_modules.py`).
+13. **Don't call `project.save()` through the MCP bridge.** Twice it left TouchDesigner waiting on something
+    and the bridge unresponsive. Saving is a human Ctrl+S.
 
 ## 11. Files and source control
 

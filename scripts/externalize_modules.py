@@ -10,13 +10,25 @@ F = project.folder
 
 
 def write_and_sync(dat, rel):
-    """Write the DAT's current content to rel, then make the DAT sync with that file."""
+    """Make the DAT sync with file `rel`, writing the DAT's content there first if needed.
+
+    Lesson learned (2026-11-17): a synced DAT can re-read its file when its .text is accessed. Opening the
+    file for writing truncates it, so reading dat.text *after* open() returned the empty file and wiped
+    the DAT. So: (1) skip DATs already synced to this file, (2) read the text BEFORE opening the file,
+    (3) never write an empty DAT over a non-empty file.
+    """
     path = os.path.join(F, rel)
+    if dat.par.syncfile.eval() and dat.par.file.eval() == rel and os.path.exists(path):
+        return False
+    text = dat.text                                   # read first
+    if not text.strip() and os.path.exists(path) and os.path.getsize(path) > 1:
+        raise RuntimeError('refusing to overwrite %s with an empty DAT (%s)' % (rel, dat.path))
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, 'w', encoding='utf-8', newline='\n') as f:
-        f.write(dat.text if dat.text.endswith('\n') else dat.text + '\n')
+        f.write(text if text.endswith('\n') else text + '\n')
     dat.par.file = rel
     dat.par.syncfile = True
+    return True
 
 
 V = op.Visuals
@@ -47,8 +59,7 @@ SYNC = [
 ]
 synced = []
 for dat, rel in SYNC:
-    if dat is not None:
-        write_and_sync(dat, rel)
+    if dat is not None and write_and_sync(dat, rel):
         synced.append(rel)
 
 MODULES = [
