@@ -55,6 +55,11 @@ SYNC = [
     (op.World.op('co2_in/clean').par.callbacks.eval() if op.World and op.World.op('co2_in/clean') else None,
      'modules/world/co2_in/clean_callbacks.py'),
     (op.Metabolism.op('tick') if op.Metabolism else None, 'modules/metabolism/tick.py'),
+    # 3D walk (explore/walk-in-3d)
+    (V.op('oak3d/animate_pixel'), 'modules/visuals/oak3d/animate_pixel.frag'),
+    (V.op('oak3d/loader'), 'modules/visuals/oak3d/loader.py'),
+    (V.op('oak3d/camera_tick'), 'modules/visuals/oak3d/camera_tick.py'),
+    (V.op('oak3d/camera_path'), 'modules/visuals/oak3d/camera_path.tsv'),
     (op.Config.op('apply'), 'project/config_apply.py'),
 ]
 synced = []
@@ -76,6 +81,7 @@ MODULES = [
     (op.World.op('co2_in') if op.World else None, 'modules/world/co2_in.tox'),
     (op.Metabolism, 'modules/metabolism/metabolism.tox'),
     (V.op('oak_metabolism'), 'modules/visuals/oak_metabolism.tox'),
+    (V.op('oak3d'), 'modules/visuals/oak3d.tox'),
 ]
 saved = []
 for comp, rel in MODULES:

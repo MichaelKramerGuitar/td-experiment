@@ -139,6 +139,21 @@ resolution to config and pulse the Feedback TOP's reset when the format changes.
 Text TOP (words sung so far) over a blurred black copy (shadow) → Level (fade) → `Over TOP` onto the live scene.
 Driven by the show clock, so it follows Pause and Restart.
 
+### 8.6 3D particles: instancing from textures (`visuals/oak3d`)
+```
+tree3d.npz ─(Script TOP + numpy, once)─► home  (x, y, z, growth order)   one pixel = one particle
+                                     └► colors (r, g, b, kind)
+home ─(GLSL TOP 'animate', every frame: vitality, time, breath, hits)─► (x, y, z, scale)
+Geometry COMP 'tree': a tiny sphere, instanced once per pixel of 'animate', coloured by 'colors'
+Camera COMP 'cam' looks at Null COMP 'target'; 'camera_tick' places both from camera_path.tsv
+Render TOP ─► out1
+```
+Why: 126k particles cost almost nothing when the per-particle work happens in one shader pass and the
+Geometry COMP just draws copies. The point cloud comes from `tools/photo_to_3d_tree.py` (the photo's
+skeleton lifted into 3D: x as in the photo, depth from each limb's compass direction).
+The walk is a table: `t` (song seconds), `angle` around the tree, `radius`, `height`, `look_y`, `fov`,
+interpolated with Catmull-Rom in polar form so it curves around the tree. Edit the TSV to re-choreograph.
+
 ## 9. Performance, recording and formats
 
 **Measured on your laptop (2026-11-15), Oak · Painted, 1280×720, Motion-JPEG:**
@@ -199,6 +214,12 @@ convert the .mov afterwards (Premiere/Media Encoder, HandBrake, or
     second, and never write an empty DAT over a non-empty file (see `scripts/externalize_modules.py`).
 13. **Don't call `project.save()` through the MCP bridge.** Twice it left TouchDesigner waiting on something
     and the bridge unresponsive. Saving is a human Ctrl+S.
+14. **A COMP's own parameters resolve from its parent's network.** On a Geometry COMP inside `oak3d`,
+    `op('animate')` finds the sibling `oak3d/animate`; `parent().op('animate')` looks one level too high.
+15. **GLSL TOP inputs given by name (TOPs parameter) don't set its resolution** — it falls back to 256×256.
+    For data textures, set the resolution explicitly to match the input (`op('home').width`).
+16. **Host time can jump.** After a freeze or a realtime↔offline switch, `absTime.stepSeconds` can be huge
+    or negative; one bad step drove the metabolism to infinity. Clamp dt and self-heal non-finite state.
 
 ## 11. Files and source control
 

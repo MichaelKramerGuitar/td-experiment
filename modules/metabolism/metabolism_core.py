@@ -21,6 +21,8 @@ Concepts (docs/METABOLISM.md):
   OUTPUTS     energy, rate, breath, vitality, substrate, capacity, stress, catalyst
 """
 
+import math
+
 DEFAULTS = {
     'absorb': 1.6,    # how strongly nutrients are taken in
     'emax': 1.0,      # energy store capacity
@@ -92,6 +94,12 @@ class Metabolism:
 
     def step(self, dt, bus, world, role='tipping'):
         p = self.p
+        # Robustness: the host's frame time can jump (app freeze, realtime <-> offline switch).
+        # One huge or negative step would blow the state up to infinity, so clamp it, and
+        # start a new life if the state ever stops being a finite number.
+        dt = max(0.0, min(float(dt), 0.1))
+        if not all(math.isfinite(v) for v in (self.E, self.P, self.V, self.cat)):
+            self.reset()
         fast, base, cat, trace = nutrients(bus)
         self.cat += (cat - self.cat) * min(1.0, dt / 0.8)           # voice lingers ~1 s
         S, C, stress = environment(role, world.get('level', 0), world.get('cycle', 0), p)

@@ -157,6 +157,12 @@ decay experienced in 3D space. Planned on branch `explore/walk-in-3d` (see sessi
   Stress, start to finish → rendered, merged to main, tagged `iter-02-metabolism-stress`, release notes with
   audience-presentation ideas. Fixed: synced DATs emptied by the save script (gotcha 12); project.save via
   bridge hangs (gotcha 13). Next: 3D walk into the tree.
+- **2026-11-17 — session 3b.** GitHub linked: Claude can push and manage releases (REST API). Branch
+  `explore/walk-in-3d`: photo → 3D point cloud (`tools/photo_to_3d_tree.py`), `visuals/oak3d` (126k instanced
+  particles grown by the metabolism's vitality, lit by breath), camera walk from `camera_path.tsv`, scene
+  *Oak · 3D Walk*. Fixed: metabolism blew up to infinity after a host time jump (gotcha 16).
+  Next: watch it in Stress; tune the walk (Michael's exercise: edit camera_path.tsv); canopy beyond photo
+  edges; backdrop; depth/fog.
 
 ## 8. How to resume with Claude
 
