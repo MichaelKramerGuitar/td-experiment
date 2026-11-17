@@ -39,6 +39,10 @@ SYNC = [
     (op.Lyrics.op('tick'), 'modules/overlays/lyrics/tick.py'),
     (op.Lyrics.op('loader'), 'modules/overlays/lyrics/loader.py'),
     (op.Output.op('scene_build'), 'project/scene_build.py'),
+    # world + metabolism (explore/metabolism)
+    (op.World.op('co2_in/clean').par.callbacks.eval() if op.World and op.World.op('co2_in/clean') else None,
+     'modules/world/co2_in/clean_callbacks.py'),
+    (op.Metabolism.op('tick') if op.Metabolism else None, 'modules/metabolism/tick.py'),
     (op.Config.op('apply'), 'project/config_apply.py'),
 ]
 synced = []
@@ -58,6 +62,9 @@ MODULES = [
     (V.op('oak_particles'), 'modules/visuals/oak_particles.tox'),
     (op.Lyrics, 'modules/overlays/lyrics.tox'),
     (op.Show, 'modules/control/show_control.tox'),
+    (op.World.op('co2_in') if op.World else None, 'modules/world/co2_in.tox'),
+    (op.Metabolism, 'modules/metabolism/metabolism.tox'),
+    (V.op('oak_metabolism'), 'modules/visuals/oak_metabolism.tox'),
 ]
 saved = []
 for comp, rel in MODULES:
